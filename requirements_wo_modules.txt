@@ -1,9 +1,9 @@
 cfgrib
-climetlab 
+climetlab==0.13.5
 climetlab-maelstrom-ens10
 eccodes==1.4.2
 ecmwf-api-client==1.6.3
-ecmwf-opendata==0.1.1
+ecmwf-opendata==0.1.2
 ecmwflibs==0.5.0
 hanging_threads
 hydra-core

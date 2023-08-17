@@ -1,0 +1,12 @@
+name: ap4
+
+entry_points:
+  main:
+    parameters:
+      nepochs:
+        type: int
+        default: 1
+    command: >
+      python3 Train.py
+          --epochs {nepochs}
+ 

@@ -21,7 +21,7 @@ class ENS10GridDataset(Dataset):
 
     def __init__(self, data_path, target_var, dataset_type="train", normalized=True, return_time=False):
         self.ds_era5 = cml.load_dataset(
-            'maelstrom-ens10',
+            'climetlab-maelstrom-ens10',
             date='20170101',
             dtype='sfc'
         )

@@ -1,4 +1,6 @@
 cfgrib
+climetlab 
+climetlab-maelstrom-ens10
 eccodes==1.4.2
 ecmwf-api-client==1.6.3
 ecmwf-opendata==0.1.1

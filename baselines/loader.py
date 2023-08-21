@@ -7,7 +7,7 @@ import cf2cdm
 import glob
 from datetime import datetime
 import glob
-import climetlab as cml
+
 
 
 class ENS10GridDataset(Dataset):
@@ -20,55 +20,49 @@ class ENS10GridDataset(Dataset):
     """
 
     def __init__(self, data_path, target_var, dataset_type="train", normalized=True, return_time=False):
-        self.ds_era5 = cml.load_dataset(
-            'maelstrom-ens10',
-            date='20170101',
-            dtype='sfc'
-        )
-        self.ds_era5.to_xarray().to_netcdf("/p/scratch/deepacf/maelstrom/grau1/ens10_data/20170101.nc")
 
         self.return_time = return_time
-        # suffix = ""
-        # if normalized:
-        #     suffix = "_normalized"
-        # if dataset_type == "train":
-        #     time_range = slice("1998-01-01", "2015-12-31")
-        # elif dataset_type == "test":
-        #     time_range = slice("2016-01-01", "2017-12-31")
-        # if target_var in ["t850", "z500"]:
-        #     ds_mean = xr.open_dataset(f"{data_path}/ENS10_pl_mean{suffix}.nc", chunks={"time": 10}).sel(time=time_range)
-        #     ds_std = xr.open_dataset(f"{data_path}/ENS10_pl_std{suffix}.nc", chunks={"time": 10}).sel(time=time_range)
-        #     self.ds_scale_mean = xr.open_dataset(f"{data_path}/ENS10_pl_mean.nc", chunks={"time": 1},
-        #                                          engine="h5netcdf").sel(time=time_range)
-        #     self.ds_scale_std = xr.open_dataset(f"{data_path}/ENS10_pl_std.nc", chunks={"time": 1},
-        #                                         engine="h5netcdf").sel(time=time_range)
-        #     self.variables = ["Z", "T", "Q", "W", "D", "U", "V"]
-        #     if target_var == "t850":
-        #         self.ds_mean = ds_mean.sel(plev=85000)
-        #         self.ds_std = ds_std.sel(plev=85000)
-        #         self.ds_era5 = xr.open_dataset(f"{data_path}/ERA5_t850.nc", chunks={"time": 10}).sel(
-        #             time=time_range).isel(plev=0).T
-        #         self.ds_scale_mean = self.ds_scale_mean.sel(plev=85000).T
-        #         self.ds_scale_std = self.ds_scale_std.sel(plev=85000).T
-        #     elif target_var == "z500":
-        #         self.ds_mean = ds_mean.sel(plev=50000)
-        #         self.ds_std = ds_std.sel(plev=50000)
-        #         self.ds_era5 = xr.open_dataset(f"{data_path}/ERA5_z500.nc", chunks={"time": 10}).sel(
-        #             time=time_range).isel(plev=0).Z
-        #         self.ds_scale_mean = self.ds_scale_mean.sel(plev=50000).Z
-        #         self.ds_scale_std = self.ds_scale_std.sel(plev=50000).Z
-        # elif target_var in ["t2m"]:
-        #     self.ds_mean = xr.open_dataset(f"{data_path}/ENS10_sfc_mean{suffix}.nc", chunks={"time": 10}).sel(
-        #         time=time_range)
-        #     self.ds_std = xr.open_dataset(f"{data_path}/ENS10_sfc_std{suffix}.nc", chunks={"time": 10}).sel(
-        #         time=time_range)
-        #     self.ds_era5 = xr.open_dataset(f"{data_path}/ERA5_sfc_t2m.nc", chunks={"time": 10}).sel(
-        #         time=time_range).T2M
-        #     self.ds_scale_mean = xr.open_dataset(f"{data_path}/ENS10_sfc_mean.nc", chunks={"time": 1},
-        #                                          engine="h5netcdf").sel(time=time_range).T2M
-        #     self.ds_scale_std = xr.open_dataset(f"{data_path}/ENS10_sfc_std.nc", chunks={"time": 1},
-        #                                         engine="h5netcdf").sel(time=time_range).T2M
-        #     self.variables = ['SSTK', 'TCW', 'TCWV', 'CP', 'MSL', 'TCC', 'U10M', 'V10M', 'T2M', 'TP', 'SKT']
+        suffix = ""
+        if normalized:
+            suffix = "_normalized"
+        if dataset_type == "train":
+            time_range = slice("1998-01-01", "2015-12-31")
+        elif dataset_type == "test":
+            time_range = slice("2016-01-01", "2017-12-31")
+        if target_var in ["t850", "z500"]:
+            ds_mean = xr.open_dataset(f"{data_path}/ENS10_pl_mean{suffix}.nc", chunks={"time": 10}).sel(time=time_range)
+            ds_std = xr.open_dataset(f"{data_path}/ENS10_pl_std{suffix}.nc", chunks={"time": 10}).sel(time=time_range)
+            self.ds_scale_mean = xr.open_dataset(f"{data_path}/ENS10_pl_mean.nc", chunks={"time": 1},
+                                                 engine="h5netcdf").sel(time=time_range)
+            self.ds_scale_std = xr.open_dataset(f"{data_path}/ENS10_pl_std.nc", chunks={"time": 1},
+                                                engine="h5netcdf").sel(time=time_range)
+            self.variables = ["Z", "T", "Q", "W", "D", "U", "V"]
+            if target_var == "t850":
+                self.ds_mean = ds_mean.sel(plev=85000)
+                self.ds_std = ds_std.sel(plev=85000)
+                self.ds_era5 = xr.open_dataset(f"{data_path}/ERA5_t850.nc", chunks={"time": 10}).sel(
+                    time=time_range).isel(plev=0).T
+                self.ds_scale_mean = self.ds_scale_mean.sel(plev=85000).T
+                self.ds_scale_std = self.ds_scale_std.sel(plev=85000).T
+            elif target_var == "z500":
+                self.ds_mean = ds_mean.sel(plev=50000)
+                self.ds_std = ds_std.sel(plev=50000)
+                self.ds_era5 = xr.open_dataset(f"{data_path}/ERA5_z500.nc", chunks={"time": 10}).sel(
+                    time=time_range).isel(plev=0).Z
+                self.ds_scale_mean = self.ds_scale_mean.sel(plev=50000).Z
+                self.ds_scale_std = self.ds_scale_std.sel(plev=50000).Z
+        elif target_var in ["t2m"]:
+            self.ds_mean = xr.open_dataset(f"{data_path}/ENS10_sfc_mean{suffix}.nc", chunks={"time": 10}).sel(
+                time=time_range)
+            self.ds_std = xr.open_dataset(f"{data_path}/ENS10_sfc_std{suffix}.nc", chunks={"time": 10}).sel(
+                time=time_range)
+            self.ds_era5 = xr.open_dataset(f"{data_path}/ERA5_sfc_t2m.nc", chunks={"time": 10}).sel(
+                time=time_range).T2M
+            self.ds_scale_mean = xr.open_dataset(f"{data_path}/ENS10_sfc_mean.nc", chunks={"time": 1},
+                                                 engine="h5netcdf").sel(time=time_range).T2M
+            self.ds_scale_std = xr.open_dataset(f"{data_path}/ENS10_sfc_std.nc", chunks={"time": 1},
+                                                engine="h5netcdf").sel(time=time_range).T2M
+            self.variables = ['SSTK', 'TCW', 'TCWV', 'CP', 'MSL', 'TCC', 'U10M', 'V10M', 'T2M', 'TP', 'SKT']
 
         self.length = len(self.ds_era5)
 

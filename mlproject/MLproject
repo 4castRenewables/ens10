@@ -7,6 +7,6 @@ entry_points:
         type: int
         default: 1
     command: >
-      python3 Train.py
+      python3 /p/project/deepacf/maelstrom/grau1/ens10/baselines/Train.py
           --epochs {nepochs}
  

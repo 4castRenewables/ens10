@@ -15,6 +15,7 @@ import xarray as xr
 from models.tformer import Tformer_prepare
 from models.LeNet import LeNet_prepare
 from models.UNet import UNet_prepare
+import mlflow
 
 best_crps = 0
 
@@ -47,6 +48,7 @@ def train(epoch, trainloader, model, optimizer, criterion, args, device):
         optimizer.step()
 
         train_loss.append(loss.item())
+        mlflow.log_metrics({"training loss": loss.item()}, step=epoch)
     print(f'Epoch {epoch} Avg. Loss: {np.average(train_loss)}')
 
 

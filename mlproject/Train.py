@@ -1,8 +1,7 @@
-import sys, os
-sys.path.append(os.path.abspath(os.path.join('..', 'baselines')))
-
 import numpy as np
+
 from utils.metrics import CrpsGaussianLoss, EECRPSGaussianLoss
+from models import *
 from utils.parser import args_parser
 from loader import *
 from plot import scatter_plot, hist2d_plot
@@ -11,7 +10,11 @@ import os
 from torch import nn as nn
 from tqdm import tqdm
 from datetime import datetime
+from hanging_threads import start_monitoring
 import xarray as xr
+from models.tformer import Tformer_prepare
+from models.LeNet import LeNet_prepare
+from models.UNet import Unet_prepare
 
 best_crps = 0
 

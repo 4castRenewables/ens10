@@ -1,4 +1,4 @@
-### In juwelsbooster
+### On Juwels Booster
 1. Set python to version 3.9. For this load the following modules:
 ```
 ml --force purge
@@ -41,7 +41,7 @@ export LC_ALL=en_US.UTF-8
 
 ### Preprocess ENS10 dataset
 
-In case you need to preprocess the ENS10 dataset follow this steps:
+In case you need to preprocess the ENS10 dataset follow these steps:
 
 1. Load the following modules and activate the virtual environment you created
 ```commandline
@@ -51,11 +51,11 @@ source <b>/path/to/&lt;venv-name&gt;</b>/bin/activate;
 2. Download the ENS10 dataset from this [link](http://spclstorage.inf.ethz.ch/projects/deep-weather/ENS10/) including the EFI files:
 3. Preprocess the data by executing the script `ens_preprocessing.sh` and subsequently `reanalysis_preprocessing.sh`. Both scripts can be found in the folder `ens10/baselines/utils`. Ensure that when you run the scripts, your current working directory is the one containing the ENS10 data. If it's not, adjust the environment variables `ENS10_FOLDER`, `OUTPUT_FOLDER`, and `ERA5_FOLDER` accordingly.
 
-### In mantik
+### On the Mantik platform
 
 Set up a project in Mantik to enable the execution of your experiment. For a step-by-step guide, refer to the quickstart tutorial available [here](https://mantik-ai.gitlab.io/mantik/ui/quickstart.html)
 
-### In your local mlproject
+### On your local machine
 
 1. Set `PreRunCommand` in `unicore-config-venv.yaml` to the path of your virtual enviroment
 
@@ -69,4 +69,4 @@ Set up a project in Mantik to enable the execution of your experiment. For a ste
 ```
 mantik runs submit <absolute path to maelstrom-radiation/mlproject directory> --backend-config unicore-config-venv.yaml --entry-point main --experiment-id <experiment ID> --run-name <run name> -v
 ```
-> **_NOTE:_** When you run your application, please ensure that the local copy of the 'ens10' repository in 'juwelsbooster' includes all the latest changes.
+> **_NOTE:_** When you run your application, please ensure that the local copy of the 'ens10' repository on 'Juwels Booster' includes all the latest changes.

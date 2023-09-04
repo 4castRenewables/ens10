@@ -43,6 +43,10 @@ def args_parser():
 
     parser.add_argument('--make-plot', action='store_true',
                         help='make scatter plot for ens10 and era5')
+
+    parser.add_argument('--small-time-range', action='store_true',
+                        help='test model in a small subset of ENS10GridDataset')
+
     args = parser.parse_args()
 
     return args

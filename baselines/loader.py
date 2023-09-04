@@ -19,16 +19,16 @@ class ENS10GridDataset(Dataset):
     the mean/std of all variables in ENS10 on the same pressure level
     """
 
-    def __init__(self, data_path, target_var, dataset_type="train", normalized=True, return_time=False):
+    def __init__(self, data_path, target_var, dataset_type="train", normalized=True, return_time=False, small_time_range=False):
 
         self.return_time = return_time
         suffix = ""
         if normalized:
             suffix = "_normalized"
         if dataset_type == "train":
-            time_range = slice("1998-01-01", "2015-12-31")
+            time_range = slice("1998-01-01", "2015-12-31") if not small_time_range else slice("1998-01-01", "1998-12-31")
         elif dataset_type == "test":
-            time_range = slice("2016-01-01", "2017-12-31")
+            time_range = slice("2016-01-01", "2017-12-31") if not small_time_range else slice("2016-01-01", "2016-12-31")
         if target_var in ["t850", "z500"]:
             ds_mean = xr.open_dataset(f"{data_path}/ENS10_pl_mean{suffix}.nc", chunks={"time": 10}).sel(time=time_range)
             ds_std = xr.open_dataset(f"{data_path}/ENS10_pl_std{suffix}.nc", chunks={"time": 10}).sel(time=time_range)
@@ -384,12 +384,14 @@ def loader_prepare(args):
     if args.model == 'UNet':
         trainloader = DataLoader(ENS10GridDataset(data_path=args.data_path,
                                                   target_var=args.target_var,
-                                                  dataset_type='train'),
+                                                  dataset_type='train',
+                                                  small_time_range=args.small_time_range),
                                  args.batch_size, shuffle=True, num_workers=2, pin_memory=True)
 
         testloader = DataLoader(ENS10GridDataset(data_path=args.data_path,
                                                  target_var=args.target_var,
-                                                 dataset_type='test', return_time=True),
+                                                 dataset_type='test', return_time=True,
+                                                 small_time_range=args.small_time_range),
                                 args.batch_size, shuffle=False, num_workers=2, pin_memory=True)
     elif args.model == 'MLP':
         trainloader = DataLoader(ENS10PointDataset(data_path=args.data_path,

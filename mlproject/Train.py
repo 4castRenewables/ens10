@@ -10,7 +10,6 @@ import os
 from torch import nn as nn
 from tqdm import tqdm
 from datetime import datetime
-from hanging_threads import start_monitoring
 import xarray as xr
 from models.tformer import Tformer_prepare
 from models.LeNet import LeNet_prepare
@@ -48,7 +47,7 @@ def train(epoch, trainloader, model, optimizer, criterion, args, device):
         optimizer.step()
 
         train_loss.append(loss.item())
-        mlflow.log_metrics({"training loss": loss.item()}, step=epoch)
+    mlflow.log_metrics({"average training loss": np.average(train_loss)}, step=epoch)
     print(f'Epoch {epoch} Avg. Loss: {np.average(train_loss)}')
 
 
@@ -93,6 +92,7 @@ def test(epoch, testloader, model, criterion, args, device):
     # Save checkpoint.
     crps_loss = np.average(test_loss)
     crps_loss_efi = np.average(test_loss_efi)
+    mlflow.log_metrics({"Test CRPS": crps_loss, "EFI-weighted CRPS":crps_loss_efi}, step=epoch)
     print(f'Test CRPS: {crps_loss}, EFI-weighted CRPS: {crps_loss_efi}')
 
     if crps_loss < best_crps:

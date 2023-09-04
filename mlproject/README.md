@@ -8,7 +8,7 @@ ml GCCcore/.11.2.0
 ml Python/3.9.6
 ```
 
-2. Create a virtual enviroment and activate it:
+2. Create a virtual environment and activate it:
 ```
 python -m venv <venv-name>
 source <venv-name>/bin/activate
@@ -21,38 +21,52 @@ git clone https://github.com/saragrau4/maelstrom-radiation.git
 git checkout main
 ```
 
-3. Install ap3 dependencies with pip. 
+3. Install ap4 dependencies with pip. 
 ```
 pip install -r requirements_wo_modules.txt
 ```
 
 4. Add the following code at the end of the virtual enviroment activate file `<venv-name>/bin/activate`:
 ```
-BASE_DIR="<absolute path to maelstrom-radiation/climetlab_maelstrom_radiation/benchmarks directory>"
-# expand PYTHONPATH
-export PYTHONPATH=${BASE_DIR}:$PYTHONPATH
-export PYTHONPATH=${BASE_DIR}:$PYTHONPATH
-export PYTHONPATH=${BASE_DIR}/utils:$PYTHONPATH
-export PYTHONPATH=${BASE_DIR}/handle_data:$PYTHONPATH
-export PYTHONPATH=${BASE_DIR}/models:$PYTHONPATH
-export PYTHONPATH=${BASE_DIR}/postprocess:$PYTHONPATH
-export PYTHONPATH=${BASE_DIR}/preprocess:$PYTHONPATH
+BASE_DIR="<absolute path to ens10 directory>"
 
+# expand PYTHONPATH
+export PYTHONPATH=${BASE_DIR}/baselines:$PYTHONPATH
+
+# add environment variables
+export HDF5_USE_FILE_LOCKING=FALSE
+export LC_CTYPE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 ```
+
+### Preprocess ENS10 dataset
+
+In case you need to preprocess the ENS10 dataset follow this steps:
+
+1. Load the following modules and activate the virtual environment you created
+```commandline
+module load Stages/2022  GCCcore/.11.2.0 Python/3.9.6 CUDA/11.5 numactl/2.0.14 cuDNN/8.3.1.22-CUDA-11.5 ecCodes/2.22.1 parallel/20210722 GCC/11.2.0 OpenMPI/4.1.1 CDO/2.0.2;
+source <b>/path/to/&lt;venv-name&gt;</b>/bin/activate;
+```
+2. Download the ENS10 dataset from this [link](http://spclstorage.inf.ethz.ch/projects/deep-weather/ENS10/) including the EFI files:
+3. Preprocess the data by executing the script `ens_preprocessing.sh` and subsequently `reanalysis_preprocessing.sh`. Both scripts can be found in the folder `ens10/baselines/utils`. Ensure that when you run the scripts, your current working directory is the one containing the ENS10 data. If it's not, adjust the environment variables `ENS10_FOLDER`, `OUTPUT_FOLDER`, and `ERA5_FOLDER` accordingly.
+
 ### In mantik
 
 Set up a project in Mantik to enable the execution of your experiment. For a step-by-step guide, refer to the quickstart tutorial available [here](https://mantik-ai.gitlab.io/mantik/ui/quickstart.html)
 
 ### In your local mlproject
 
-1. Set `Python` in `unicore-config-venv.yaml` to the path of your virtual enviroment
+1. Set `PreRunCommand` in `unicore-config-venv.yaml` to the path of your virtual enviroment
 
-```
-Environment:
-  Python: /path/to/<venv-name>
-```
+<pre><code>   PreRunCommand:
+    Command: > 
+      module load Stages/2022  GCCcore/.11.2.0 Python/3.9.6 CUDA/11.5 numactl/2.0.14 cuDNN/8.3.1.22-CUDA-11.5 ecCodes/2.22.1 parallel/20210722 GCC/11.2.0 OpenMPI/4.1.1 CDO/2.0.2;
+      source <b>/path/to/&lt;venv-name&gt;</b>/bin/activate;
+</code></pre>
 
 2. Run your experiment with mantik
 ```
-mantik runs submit <absolute path to maelstrom-radiation/mlproject directory> --backend-config unicore-config-venv.yaml --entry-point main --experiment-id <experiment ID> -v
+mantik runs submit <absolute path to maelstrom-radiation/mlproject directory> --backend-config unicore-config-venv.yaml --entry-point main --experiment-id <experiment ID> --run-name <run name> -v
 ```
+> **_NOTE:_** When you run your application, please ensure that the local copy of the 'ens10' repository in 'juwelsbooster' includes all the latest changes.

@@ -3,10 +3,23 @@ name: ap4
 entry_points:
   main:
     parameters:
+      model:
+        type: str
+        default: UNet
+      data-path:
+        type: str
+        default: /p/project/deepacf/maelstrom/grau1/ens10_data
+      target-var:
+        type: str
+        default: t850
       nepochs:
         type: int
-        default: 1
+        default: 2
     command: >
-      python3 /p/project/deepacf/maelstrom/grau1/ens10/baselines/Train.py
+      python3 Train.py
+          --model {model}
+          --data-path {data-path}
+          --target-var {target-var}
           --epochs {nepochs}
+          --small-time-range
  

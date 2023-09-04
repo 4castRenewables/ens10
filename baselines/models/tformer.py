@@ -17,7 +17,6 @@ from typing import Tuple, Union, Dict, Any
 from abc import abstractmethod
 
 # External modules
-import pytorch_lightning as pl
 import torch
 import torch.nn
 from torch import nn as nn

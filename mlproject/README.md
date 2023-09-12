@@ -29,7 +29,7 @@ git checkout main
 pip install -r requirements_wo_modules.txt
 ```
 
-6. Add the following code at the end of the virtual environment activate file `<venv-name>/bin/activate`:
+6. Add the following code at the end of the virtual environment activation file `<venv-name>/bin/activate`:
 ```
 BASE_DIR="<absolute path to ens10 directory>"
 
@@ -50,7 +50,7 @@ export LC_ALL=en_US.UTF-8
    3. Preprocess the data by executing the script `ens_preprocessing.sh` and subsequently `reanalysis_preprocessing.sh`. Both scripts can be found in the folder `ens10/baselines/utils`. Ensure that when you run the scripts, your current working directory is the one containing the ENS10 data. If it's not, adjust the environment variables `ENS10_FOLDER`, `OUTPUT_FOLDER`, and `ERA5_FOLDER` accordingly.
 
 
-8. Set up a project in Mantik to enable the execution of your experiment. For a step-by-step guide, refer to the quickstart tutorial available [here](https://mantik-ai.gitlab.io/mantik/ui/quickstart.html)
+8. The results will be logged to an Experiment on the MLflow tracking server on Mantik. Set up a project in Mantik and create a new Experiment. Note its experiment Id, which will be needed in the submission command. For a step-by-step guide, refer to the Quickstart tutorial available [here](https://mantik-ai.gitlab.io/mantik/ui/quickstart.html).
 
 9. Update the `unicore-config-venv.yaml` file by specifying the `PreRunCommand` with the path to your virtual environment.
 

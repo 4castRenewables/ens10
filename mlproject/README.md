@@ -53,13 +53,14 @@ export LC_ALL=en_US.UTF-8
 
 8. The results will be logged to an Experiment on the MLflow tracking server on Mantik. Set up a project in Mantik and create a new Experiment. Note its experiment Id, which will be needed in the submission command. For a step-by-step guide, refer to the Quickstart tutorial available [here](https://mantik-ai.gitlab.io/mantik/ui/quickstart.html).
 
-9. Update the `unicore-config-venv.yaml` file by specifying the `PreRunCommand` with the path to your virtual environment.
+9. Update the `unicore-config-venv.yaml` file by specifying the `PreRunCommandOnComputeNode` with the path to your virtual environment.
 
-<pre><code>   PreRunCommand:
-    Command: > 
-      module load Stages/2022  GCCcore/.11.2.0 Python/3.9.6 CUDA/11.5 numactl/2.0.14 cuDNN/8.3.1.22-CUDA-11.5 ecCodes/2.22.1 parallel/20210722 GCC/11.2.0 OpenMPI/4.1.1 CDO/2.0.2;
-      source <b>/path/to/&lt;venv-name&gt;</b>/bin/activate;
+<pre><code>   PreRunCommandOnComputeNode: >
+   module load Stages/2022  GCCcore/.11.2.0 Python/3.9.6 CUDA/11.5 numactl/2.0.14 cuDNN/8.3.1.22-CUDA-11.5 ecCodes/2.22.1 parallel/20210722 GCC/11.2.0 OpenMPI/4.1.1 CDO/2.0.2;
+   source <b>/path/to/&lt;venv-name&gt;</b>/bin/activate;
 </code></pre>
+
+> **_NOTE:_** 'Juwels Booster' hast only A100 GPUs, for which the CUDA version 11.5 is too old. As a result, the application can only be run on 'Juwels Cluster'
 
 10. In the `MLproject` file, define the `data-path` as the absolute path to the preprocessed ENS10 dataset.
 
@@ -67,4 +68,4 @@ export LC_ALL=en_US.UTF-8
 ```
 mantik runs submit <absolute path to maelstrom-radiation/mlproject directory> --backend-config unicore-config-venv.yaml --entry-point main --experiment-id <experiment ID> --run-name <run name> -v
 ```
-> **_NOTE:_** When you run your application, please ensure that the local copy of the 'ens10' repository on 'Juwels Booster' includes all the latest changes.
+> **_NOTE:_** When you run your application, please ensure that the local copy of the 'ens10' repository on HPC includes all the latest changes.
